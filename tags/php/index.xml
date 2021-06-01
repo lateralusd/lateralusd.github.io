@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>php on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/php/</link>
+    <description>Recent content in php on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 17 Aug 2020 13:09:06 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fun RCE with PHP upload</title>
+      <link>https://lateralusd.github.io/rce/</link>
+      <pubDate>Mon, 17 Aug 2020 13:09:06 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/rce/</guid>
+      <description>Introduction I know this is not about MacOS nor iOS but this was something that had to be written.
+Recently I had a web application penetration test on which I have found CSV injection and a great example of bypassing PHP image upload. Users with admin privileges had an option to change user&amp;rsquo;s profile picture which immediately caught my eye.
+App details  Fictional hostname: example.com Language: PHP Framework: Laravel  Analysis After messing around with trying to upload some php shell I was constantly getting 500 Internal Server Error which was kinda a clue to me that application is not allowing anything besides good ol&#39; images.</description>
+    </item>
+    
+  </channel>
+</rss>

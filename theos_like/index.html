@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Code injection on nonjailbroken iPhone &middot; </title>
+        <meta name="description" content="Using custom dylib to modify applications on nonjailbroken iPhone">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Code injection on nonjailbroken iPhone">
+<meta property="og:description" content="Using custom dylib to modify applications on nonjailbroken iPhone">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/theos_like/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Code injection on nonjailbroken iPhone</h1>
+    
+        <p class="post-description" itemprop="description">Using custom dylib to modify applications on nonjailbroken iPhone</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2020-12-09" itemprop="datePublished">Wed, Dec 9, 2020</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h2 id="introduction">Introduction</h2>
+<p>A few days ago I was writing about injecting FridaGadget.dylib inside application on nonjailbroken device so I was thinking why not to do the same thing, just with custom code (code injection).</p>
+<p>The idea was to change some functionality of original application using dynamic library (dylib). Links for application are on my github and links are below.</p>
+<ul>
+<li><a href="https://github.com/lateralusd/WillGetHacked">https://github.com/lateralusd/WillGetHacked</a></li>
+<li><a href="https://github.com/lateralusd/Haxor.dylib">https://github.com/lateralusd/Haxor.dylib</a></li>
+</ul>
+<p>Like in my previous <a href="https://lateralusd.github.io/frida_patching/">post</a>, the same prerequsities apply.</p>
+<h2 id="details-about-application">Details about application</h2>
+<p>Three important files are:</p>
+<ul>
+<li>TestClass.h</li>
+<li>TestClass.m</li>
+<li>ViewController.m</li>
+</ul>
+<p>Implementation of ViewController inside ViewController.m file can be seen below.</p>
+<pre><code>@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSLog(@&quot;ECHO View loaded&quot;);
+    TestClass *test = [[TestClass alloc] init];
+    [test whoami];
+}
+
+@end
+</code></pre><p>Inside we have a method viewDidLoad which logs &ldquo;ECHO View loaded&rdquo; and after that we create an object of class TestClass which is defined in TestClass.h file. Then we call method <em>whoami</em> on it.</p>
+<p>TestClass.h file:</p>
+<pre><code>@interface TestClass : NSObject
+-(void)whoami;
+@end
+</code></pre><p>TestClass.m file:</p>
+<pre><code>@implementation TestClass
+- (void)whoami {
+    NSLog(@&quot;ECHO I am from the app&quot;);
+}
+@end
+</code></pre><p>After we run the app, in logs we can see something like this.</p>
+<pre><code>$ idevicesyslog -m ECHO
+[connected]
+Dec  9 22:36:20 WillGetHacked[4272] &lt;Notice&gt;: ECHO View loaded
+Dec  9 22:36:20 WillGetHacked[4272] &lt;Notice&gt;: ECHO I am from the app
+</code></pre><h2 id="details-about-dynamic-library">Details about dynamic library</h2>
+<p>For our dynamic library, we have simple interface with one instance method in it. That is the method that will replace <em>whoami</em> method from interface <em>TestClass</em>.</p>
+<p>Haxor.h file:</p>
+<pre><code>@interface Haxor : NSObject
+- (void)replace;
+@end
+</code></pre><p>Implementation of this interface is where the real fun is. Let&rsquo;s take a look at the code.</p>
+<pre><code>#import &quot;Haxor.h&quot;
+#include &lt;objc/runtime.h&gt;
+
+@implementation Haxor
++ (void)load{
+    NSLog(@&quot;ECHO Loading Dylib&quot;);
+    
+    Class thisClass = [self class];
+    Class toReplaceClass = NSClassFromString(@&quot;TestClass&quot;);
+    
+    SEL selReplace = @selector(replace);
+    SEL selOriginal = @selector(whoami);
+    
+    Method replaceMethod = class_getInstanceMethod(thisClass, selReplace);
+    Method originalMethod = class_getInstanceMethod(toReplaceClass, selOriginal);
+    
+    IMP impReplace = method_getImplementation(replaceMethod);
+    
+    method_setImplementation(originalMethod, impReplace);
+}
+
+- (void)replace{
+    NSLog(@&quot;ECHO I am from the dylib&quot;);
+}
+@end
+
+</code></pre><h2 id="explanation">Explanation</h2>
+<p>We will use what is called method swizzling. It basically uses power of objective c runtime to modify application.</p>
+<pre><code>Class thisClass = [self class];
+Class toReplaceClass = NSClassFromString(@&quot;TestClass&quot;);
+</code></pre><p>Here we are taking Class objects from classes which have methods we would like to replace. In this case, we have method -[thisDylib replace] and method -[TestClass whoami]. Since we are in Haxor we can use <code>[self class]</code> to get it&rsquo;s class method. To obtain Class for the one we would like to replace, we call function <code>NSClassFromString</code> function which accepts NSString as class name and returns Class object for that class.</p>
+<pre><code>SEL selReplace = @selector(replace);
+SEL selOriginal = @selector(whoami);
+</code></pre><p>We are creating selector variables of methods we are gonna substitute.</p>
+<pre><code>Method replaceMethod = class_getInstanceMethod(thisClass, selReplace);
+Method originalMethod = class_getInstanceMethod(toReplaceClass, selOriginal);
+</code></pre><p><code>class_getInstanceMethod</code> returns to us Method object of instance methods which we want. <code>replaceMethod</code> will basically have -[Haxor replace] as a Method object, while <code>originalMethod</code> will have -[TestClass whoami].</p>
+<pre><code>IMP impReplace = method_getImplementation(replaceMethod);
+</code></pre><p><code>impReplace</code> will have implementation of replaceMethod, or -[Haxor replace].</p>
+<pre><code>method_setImplementation(originalMethod, impReplace);
+</code></pre><p>This is the last step, we are setting implementation of -[TestClass whoami] to be the same as -[Haxor replace].</p>
+<h2 id="creating-ipa-and-installing-it">Creating ipa and installing it</h2>
+<p>The process is similar to the one we did last time.</p>
+<p>Since Haxor is a static library (.a extension), we will first convert it to dynamic library (dylib) so we can inject it the same way we did with out FridaGadget.dylib.</p>
+<p>My library is called libHaxor.a, so to convert it to dylib we use:</p>
+<p><code>$ xcrun --sdk iphoneos clang -arch arm64 -shared -all_load -o Haxor.dylib libHaxor.a</code>.</p>
+<p>Make sure to replace <code>-arch</code> parameter with the architecture of your device.</p>
+<p>Let&rsquo;s create Payload directory and copy our newly created dylib and app inside of it.</p>
+<p><strong>NOTE: You need to have valid provisioning profile in order to sign the app</strong></p>
+<pre><code>$ mkdir Payload/
+$ cp -r WillGetHacked.app Payload/
+$ cp Haxor.dylib Payload/WillGetHacked.app/
+$ tree
+.
+├── Haxor.dylib
+├── Payload
+│   └── WillGetHacked.app
+│       ├── Base.lproj
+│       │   ├── LaunchScreen.storyboardc
+│       │   │   ├── 01J-lp-oVM-view-Ze5-6b-2t3.nib
+│       │   │   ├── Info.plist
+│       │   │   └── UIViewController-01J-lp-oVM.nib
+│       │   └── Main.storyboardc
+│       │       ├── BYZ-38-t0r-view-8bC-Xf-vdC.nib
+│       │       ├── Info.plist
+│       │       └── UIViewController-BYZ-38-t0r.nib
+│       ├── Haxor.dylib
+│       ├── Info.plist
+│       ├── PkgInfo
+│       ├── WillGetHacked
+│       ├── _CodeSignature
+│       │   └── CodeResources
+│       └── embedded.mobileprovision
+├── embedded.mobileprovision
+└── libHaxor.a
+</code></pre><p>Now we need to insert our Haxor.dylib inside binary and add rpath so binary knows where to search for dylibs.</p>
+<pre><code>$ insert_dylib --strip-codesig --inplace @executable_path/Haxor.dylib Payload/WillGetHacked.app/WillGetHacked
+Added LC_LOAD_DYLIB to Payload/WillGetHacked.app/WillGetHacked
+$ install_name_tool -add_rpath @executable_path/. Payload/WillGetHacked.app/WillGetHacked
+</code></pre><p>Copy your provisioning profile in the same directory where Payload/ directory is and run:</p>
+<pre><code>$ zip -qry hacked.ipa Payload/
+$ applesign -m ./embedded.mobileprovision hacked.ipa
+[ ... REDACTED ... ]
+Target is now signed: hacked-resigned.ipa
+Cleaning up /Users/daemon1/injection/hacked.ipa.f3b6be03-336c-44d7-8537-d96cf8281d2b
+</code></pre><p>Installing on the device using <code>ideviceinstaller</code></p>
+<p><code> $ ideviceinstaller -i hacked-resigned.ipa</code></p>
+<p>If everything is done correctly, application will get installed. Now if we check syslog, we will see that our dylib successfuly substituted method.</p>
+<pre><code>$ idevicesyslog -m ECHO
+Dec  9 22:49:17 WillGetHacked(Haxor.dylib)[4302] &lt;Notice&gt;: ECHO Loading Dylib
+Dec  9 22:49:17 WillGetHacked[4302] &lt;Notice&gt;: ECHO View loaded
+Dec  9 22:49:17 WillGetHacked(Haxor.dylib)[4302] &lt;Notice&gt;: ECHO I am from the dylib
+</code></pre><p>We can expand this even more, we can also add our custom methods to classes or perhaps calling original method after substituted one gets called.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/ios/">ios</a>, 
+            
+                <a href="/tags/iphone/">iphone</a>, 
+            
+                <a href="/tags/code-injection/">code injection</a>, 
+            
+                <a href="/tags/dylib/">dylib</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Code%20injection%20on%20nonjailbroken%20iPhone&url=https%3a%2f%2flateralusd.github.io%2ftheos_like%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2ftheos_like%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2ftheos_like%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

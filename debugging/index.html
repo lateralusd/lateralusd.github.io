@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Debugging iOS apps on jailbroken iPhone &middot; </title>
+        <meta name="description" content="LLDB &#43; debugserver to debug iOS apps">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Debugging iOS apps on jailbroken iPhone">
+<meta property="og:description" content="LLDB &#43; debugserver to debug iOS apps">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/debugging/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Debugging iOS apps on jailbroken iPhone</h1>
+    
+        <p class="post-description" itemprop="description">LLDB &#43; debugserver to debug iOS apps</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2020-07-03" itemprop="datePublished">Fri, Jul 3, 2020</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>The first time I have tried to debug iOS apps on my jailbroken iPhone I hit the wall. There were many issues I had to solve so in this short post I&rsquo;m gonna try to help you with this. Since you came to this post, I believe you already know what is lldb so I won&rsquo;t talk about it and let&rsquo;s get straight to the point.</p>
+<p><strong>Prerequisites:</strong></p>
+<ol>
+<li>Jailbroken iPhone (mine is iPhone 11, 13.4.1)</li>
+<li>OpenSSH installed and running on iPhone since we will be using <code>scp</code> to copy files to and from device.</li>
+</ol>
+<h2 id="getting-debugserver-on-device">Getting debugserver on device</h2>
+<p>The first thing you need to do is get <code>debugserver</code> on the device. There are generally two ways you can do this:</p>
+<ul>
+<li>Using hdiutil to attach certain image for your iOS</li>
+<li>Creating simple blank iOS app in Xcode and deploying it to your device.</li>
+</ul>
+<p>You can check whether you successfully did any of these methods by checking if there is file <code>/Developer/usr/bin/debugserver</code>. If you see it, procede to the next section. Otherwise, repeat steps to get your debugserver on device.</p>
+<h2 id="signing-debugserver">Signing debugserver</h2>
+<p>The next thing you want to do is transfer <code>debugserver</code> to your Mac. I am using <code>scp</code> for transfering, you can use any tool you are comfortable with. I am connected to device over usb and <em>iproxy</em> is up and running on port 2222 (<code>$ iproxy 2222 22</code>).</p>
+<p><code>$ scp -P 2222 root@localhost:/Developer/usr/bin/debugserver /tmp</code></p>
+<p>For signing debugserver I am using <code>ldid</code> which came installed with Theos. Create file <strong>ent.xml</strong> with following content:</p>
+<pre><code class="language-<!DOCTYPE" data-lang="<!DOCTYPE">&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+        &lt;key&gt;com.apple.springboard.debugapplications&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;get-task-allow&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;task_for_pid-allow&lt;/key&gt;
+        &lt;true/&gt;
+        &lt;key&gt;run-unsigned-code&lt;/key&gt;
+        &lt;true/&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre><p>Copy debugserver and ent.xml in the same folder and substitute <code>/opt/theos</code> for your install location of Theos.
+After creating file, issue <code>$ /opt/theos/bin/ldid -Sent.xml debugserver</code>.</p>
+<p>Create file ent.plist with content:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/ PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+	&lt;key&gt;com.apple.springboard.debugapplications&lt;/key&gt;
+	&lt;true/&gt;
+	&lt;key&gt;run-unsigned-code&lt;/key&gt;
+	&lt;true/&gt;
+	&lt;key&gt;get-task-allow&lt;/key&gt;
+	&lt;true/&gt;
+	&lt;key&gt;task_for_pid-allow&lt;/key&gt;
+	&lt;true/&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre><p>Then run <code>$ codesign -s - --entitlements ent.plist -f debugserver</code>. Copy debugserver back to the device, give it executive permission.</p>
+<pre><code>$ scp -P 2222 debugserver root@localhost:/usr/bin/debugserver
+$ ssh root@localhost -p 2222
+$ chmod u+x /usr/bin/debugserver
+</code></pre><h2 id="running-debugserver-and-connecting-with-lldb">Running debugserver and connecting with lldb</h2>
+<p>Spawn another iproxy instance which will be used for lldb connecting like so <code>$ iproxy 6666 6666</code> on your mac. Now it is time to run our debugserver, we will be attaching to SpringBoard. Open terminal app on your iPhone or connect over ssh and run <code># /usr/bin/debugserver 127.0.0.1:6666 -a SpringBoard</code>.</p>
+<p>You should see output similar to the one below. Also, your iphone will seems like it is not responding, that is because debugserver is attached to it and waiting for lldb to connect it in order to continue the process.</p>
+<pre><code># /usr/bin/debugserver 127.0.0.1:6666 -a SpringBoard
+debugserver-@(#)PROGRAM:LLDB  PROJECT:lldb-900.3.104
+ for arm64.
+Attaching to process SpringBoard...
+Listening to port 6666 for a connection from localhost...
+</code></pre><p>At this point, you should have 2 or 3 tabs open:</p>
+<ol>
+<li><code>iproxy 2222 22</code></li>
+<li><code>iproxy 6666 6666</code> - for debugserver</li>
+<li><code>ssh connection to iphone</code> - this applies only if you are connecting over ssh to iphone instead of terminal app</li>
+</ol>
+<p>Now create another terminal tab and type <code>lldb</code> and then type <code>process connect connect://127.0.0.1:6666</code>. Output will look something like this:</p>
+<pre><code>(lldb) process connect connect://127.0.0.1:6666
+Process 6984 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = signal SIGSTOP
+    frame #0: 0x000000019c1ac784 libsystem_kernel.dylib`mach_msg_trap + 8
+libsystem_kernel.dylib`mach_msg_trap:
+-&gt;  0x19c1ac784 &lt;+8&gt;: ret
+
+libsystem_kernel.dylib`mach_msg_overwrite_trap:
+    0x19c1ac788 &lt;+0&gt;: mov    x16, #-0x20
+    0x19c1ac78c &lt;+4&gt;: svc    #0x80
+    0x19c1ac790 &lt;+8&gt;: ret
+Target 0: (SpringBoard) stopped.
+(lldb)
+</code></pre><p>Type <strong>c</strong> at lldb prompt to continue process and now your iphone will become responsive again. If you come this far, that means now you know how to debug ios applications on jailbroken iphone using lldb and debugserver. If you have any question, send me an email.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/lldb/">lldb</a>, 
+            
+                <a href="/tags/iphone/">iPhone</a>, 
+            
+                <a href="/tags/debugging/">debugging</a>, 
+            
+                <a href="/tags/debugserver/">debugserver</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Debugging%20iOS%20apps%20on%20jailbroken%20iPhone&url=https%3a%2f%2flateralusd.github.io%2fdebugging%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fdebugging%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fdebugging%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/</link>
+    <description>Recent content in Tags on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 14 Apr 2021 20:46:23 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ios</title>
+      <link>https://lateralusd.github.io/tags/ios/</link>
+      <pubDate>Wed, 14 Apr 2021 20:46:23 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iPhone</title>
+      <link>https://lateralusd.github.io/tags/iphone/</link>
+      <pubDate>Wed, 14 Apr 2021 20:46:23 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/iphone/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reverse engineering</title>
+      <link>https://lateralusd.github.io/tags/reverse-engineering/</link>
+      <pubDate>Wed, 14 Apr 2021 20:46:23 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/reverse-engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssl</title>
+      <link>https://lateralusd.github.io/tags/ssl/</link>
+      <pubDate>Mon, 22 Feb 2021 17:22:16 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/ssl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>afl</title>
+      <link>https://lateralusd.github.io/tags/afl/</link>
+      <pubDate>Fri, 05 Feb 2021 19:04:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/afl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fuzzing</title>
+      <link>https://lateralusd.github.io/tags/fuzzing/</link>
+      <pubDate>Fri, 05 Feb 2021 19:04:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/fuzzing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>frida</title>
+      <link>https://lateralusd.github.io/tags/frida/</link>
+      <pubDate>Mon, 25 Jan 2021 18:05:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/frida/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jailbreak</title>
+      <link>https://lateralusd.github.io/tags/jailbreak/</link>
+      <pubDate>Mon, 25 Jan 2021 18:05:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/jailbreak/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code injection</title>
+      <link>https://lateralusd.github.io/tags/code-injection/</link>
+      <pubDate>Wed, 09 Dec 2020 19:31:28 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/code-injection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dylib</title>
+      <link>https://lateralusd.github.io/tags/dylib/</link>
+      <pubDate>Wed, 09 Dec 2020 19:31:28 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/dylib/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>https://lateralusd.github.io/tags/golang/</link>
+      <pubDate>Thu, 08 Oct 2020 14:54:09 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>phishing</title>
+      <link>https://lateralusd.github.io/tags/phishing/</link>
+      <pubDate>Thu, 08 Oct 2020 14:54:09 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/phishing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tools</title>
+      <link>https://lateralusd.github.io/tags/tools/</link>
+      <pubDate>Thu, 08 Oct 2020 14:54:09 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>php</title>
+      <link>https://lateralusd.github.io/tags/php/</link>
+      <pubDate>Mon, 17 Aug 2020 13:09:06 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rce</title>
+      <link>https://lateralusd.github.io/tags/rce/</link>
+      <pubDate>Mon, 17 Aug 2020 13:09:06 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/rce/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>webapp</title>
+      <link>https://lateralusd.github.io/tags/webapp/</link>
+      <pubDate>Mon, 17 Aug 2020 13:09:06 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/webapp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cycript</title>
+      <link>https://lateralusd.github.io/tags/cycript/</link>
+      <pubDate>Fri, 03 Jul 2020 17:28:54 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/cycript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cyrun</title>
+      <link>https://lateralusd.github.io/tags/cyrun/</link>
+      <pubDate>Fri, 03 Jul 2020 17:28:54 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/cyrun/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>theos</title>
+      <link>https://lateralusd.github.io/tags/theos/</link>
+      <pubDate>Fri, 03 Jul 2020 17:28:54 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/theos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debugging</title>
+      <link>https://lateralusd.github.io/tags/debugging/</link>
+      <pubDate>Fri, 03 Jul 2020 13:44:28 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debugserver</title>
+      <link>https://lateralusd.github.io/tags/debugserver/</link>
+      <pubDate>Fri, 03 Jul 2020 13:44:28 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/debugserver/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lldb</title>
+      <link>https://lateralusd.github.io/tags/lldb/</link>
+      <pubDate>Fri, 03 Jul 2020 13:44:28 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/lldb/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

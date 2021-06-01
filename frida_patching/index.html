@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>FridaGadget.dylib on nonjailbroken iPhone &middot; </title>
+        <meta name="description" content="Finally got it">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="FridaGadget.dylib on nonjailbroken iPhone">
+<meta property="og:description" content="Finally got it">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/frida_patching/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">FridaGadget.dylib on nonjailbroken iPhone</h1>
+    
+        <p class="post-description" itemprop="description">Finally got it</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2020-12-05" itemprop="datePublished">Sat, Dec 5, 2020</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h2 id="introduction">Introduction</h2>
+<p>After trying for 7.30 hours to insert FridaGadget into the application, I have finally did it. It took reading bunch of tutorials and trials until it all clicked.</p>
+<p>Anyway, FridaGadget allows us instrumentation (lets say hacking) of an application on non jailbroken iPhone. I was using my iPhone which is running iOS 14.0.1.</p>
+<h2 id="prerequisities">Prerequisities</h2>
+<ul>
+<li><a href="https://github.com/frida/frida/releases/tag/14.1.2">Frida Gadget</a></li>
+<li><a href="https://github.com/Tyilo/insert_dylib">insert_dylib</a></li>
+<li><a href="https://github.com/nowsecure/node-applesign">applesign</a></li>
+<li><a href="https://github.com/ios-control/ios-deploy">ios-deploy</a></li>
+<li><a href="https://github.com/frida/frida">Frida</a></li>
+</ul>
+<h2 id="preparation">Preparation</h2>
+<p>The first thing you need it to get provisioning profile, or let&rsquo;s call it your certificate which will be used to sign an application. To do this, create an empty project, give it a name, a <strong>remember</strong> its bundle identifier. After that, build an app and in the XCode under the Project Navigator, you should see directory <em>Products</em> and in it .app file.</p>
+<p>Right click on the .app file and click on <em>Show in Finder</em>. After the new Finder window opens, right click on an app and choose <em>Show Package Contents</em>. Copy file <strong>embedded.mobileprovision</strong> file on some location on your system, lets say <em>/tmp/</em> directory.<br>
+<code>$ cp embedded.mobileprovision /tmp</code></p>
+<h2 id="patching-the-application">Patching the application</h2>
+<p>First download the gadget from the site given in the prerequisites section. After you have done that, copy .ipa file, embedded.mobileprovision and frida gadget to the same directory, like in an example below.</p>
+<pre><code>$ tree /tmp/patchingIPA/
+.
+├── FridaGadget.dylib
+├── embedded.mobileprovision
+└── testApp.ipa
+
+0 directories, 3 files
+</code></pre><p>Unzip the .ipa file and copy FridaGadget.dylib inside it.</p>
+<pre><code>Archive:  testApp.ipa
+   creating: Payload/
+   creating: Payload/testApp.app/
+   creating: Payload/testApp.app/_CodeSignature/
+  inflating: Payload/testApp.app/_CodeSignature/CodeResources
+   creating: Payload/testApp.app/Base.lproj/
+   creating: Payload/testApp.app/Base.lproj/Main.storyboardc/
+  inflating: Payload/testApp.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib
+  inflating: Payload/testApp.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib
+  inflating: Payload/testApp.app/Base.lproj/Main.storyboardc/Info.plist
+   creating: Payload/testApp.app/Base.lproj/LaunchScreen.storyboardc/
+  inflating: Payload/testApp.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+  inflating: Payload/testApp.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib
+  inflating: Payload/testApp.app/Base.lproj/LaunchScreen.storyboardc/Info.plist
+  inflating: Payload/testApp.app/embedded.mobileprovision
+  inflating: Payload/testApp.app/testApp
+  inflating: Payload/testApp.app/Info.plist
+ extracting: Payload/testApp.app/PkgInfo
+$ cp FridaGadget.dylib Payload/testApp.app/
+</code></pre><p>Now we need to tell our binary to load this FridaGadget.dylib, we do that using <code>insert_dylib</code>.</p>
+<pre><code>$ insert_dylib --strip-codesig --inplace @executable_path/FridaGadget.dylib Payload/testApp.app/testApp
+Added LC_LOAD_DYLIB to Payload/testApp.app/testApp
+</code></pre><p>There is one more thing left before packaging our app and deploying it, and that is telling our binary where to search for dylibs. In rescue comes <code>install_name_tool</code>.</p>
+<pre><code>$ install_name_tool -add_rpath @executable_path/. Payload/testApp.app/testApp
+</code></pre><h2 id="signing-application">Signing application</h2>
+<p>For signing, we will use applesign. The first thing we need to do is package our Payload/ directory into new app.</p>
+<p><code>$ zip -qry patched.ipa Payload/</code></p>
+<p>Now we run applesign on it using our embedded.mobileprovision file and passing the bundle identifier which we setup during creation of our test app. In my case it was com.delorean.test.</p>
+<pre><code>$ applesign --mobileprovision ./embedded.mobileprovision --bundleid com.delorean.test patched.ipa
+File: /private/tmp/testApp/test/patchingIPA/patched.ipa
+[ ... REDACTED ... ]
+Target is now signed: patched-resigned.ipa
+Cleaning up /private/tmp/testApp/test/patchingIPA/patched.ipa.afdd2d36-e576-42b4-beaa-b1a3f9eec14e
+</code></pre><p>As applesign says, our signed app is now inside <em>patched-resigned.ipa</em>. We are gonna create a new directory, copy our new resigned app in it, unzip it and deploy it to our device.</p>
+<pre><code>$ mkdir test
+$ cp patched-resigned.ipa test &amp;&amp; cd test
+$ unzip patched-resigned.ipa
+Archive:  patched-resigned.ipa
+   creating: Payload/
+   creating: Payload/testApp.app/
+   creating: Payload/testApp.app/_CodeSignature/
+	[ ... REDACTED ... ]
+$ ideviceinstaller -i patched-resigned.ipa
+WARNING: could not locate iTunesMetadata.plist in archive!
+WARNING: could not locate Payload/testApp.app/SC_Info/testApp.sinf in archive!
+Copying 'patched-resigned.ipa' to device... DONE.
+Installing 'com.delorean.test'
+Install: CreatingStagingDirectory (5%)
+Install: ExtractingPackage (15%)
+Install: InspectingPackage (20%)
+Install: TakingInstallLock (20%)
+Install: PreflightingApplication (30%)
+Install: InstallingEmbeddedProfile (30%)
+Install: VerifyingApplication (40%)
+Install: CreatingContainer (50%)
+Install: InstallingApplication (60%)
+Install: PostflightingApplication (70%)
+Install: SandboxingApplication (80%)
+Install: GeneratingApplicationMap (90%)
+Install: Complete
+</code></pre><p>When you click on app, it will say that it is Untrusted Developer, go to the Settings -&gt; General -&gt; Profile &amp; Device Management, choose developer and trust it.</p>
+<p>After you have done that, run ios-deploy.</p>
+<pre><code>$ ios-deploy --bundle Payload/testApp.app/ -W -d
+[ ... REDACTED ...]
+(lldb)     connect
+(lldb)     run
+success
+2020-12-05 23:13:03.221242+0100 testApp[668:64572] Frida: Listening on 127.0.0.1 TCP port 27042
+</code></pre><p>In other window, run <code>$ frida-ps -U | grep -i gadget</code>. If everything is done correctly, you should see it in the listing and you can connect to it and hack the hell out of it.</p>
+<pre><code>$ frida-ps -U | grep -i gadget
+668  Gadget
+$ frida -U Gadget
+     ____
+    / _  |   Frida 14.0.8 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    &gt; _  |   Commands:
+   /_/ |_|       help      -&gt; Displays the help system
+   . . . .       object?   -&gt; Display information about 'object'
+   . . . .       exit/quit -&gt; Exit
+   . . . .
+   . . . .   More info at https://www.frida.re/docs/home/
+</code></pre>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/ios/">ios</a>, 
+            
+                <a href="/tags/iphone/">iphone</a>, 
+            
+                <a href="/tags/frida/">frida</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=FridaGadget.dylib%20on%20nonjailbroken%20iPhone&url=https%3a%2f%2flateralusd.github.io%2ffrida_patching%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2ffrida_patching%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2ffrida_patching%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>SSL pinning is not that hard... sometimes &middot; </title>
+        <meta name="description" content="Bypassing SSL pinning">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="SSL pinning is not that hard... sometimes">
+<meta property="og:description" content="Bypassing SSL pinning">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/ssl_bypass_simple/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">SSL pinning is not that hard... sometimes</h1>
+    
+        <p class="post-description" itemprop="description">Bypassing SSL pinning</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-02-22" itemprop="datePublished">Mon, Feb 22, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h1 id="introduction">Introduction</h1>
+<p>Recently I was pentesting an iOS application which of course had SSL pinning enables. For those who are not familiar what is SSL pinning, let&rsquo;s take description from <a href="https://thesslstore.com">https://thesslstore.com</a>:</p>
+<blockquote>
+<p>Pinning is an optional mechanism that can be used to improve the security of a service or site that relies on SSL Certificates. Pinning allows you to specify a cryptographic identity that should be accepted by users visiting your site.</p>
+</blockquote>
+<p>Basically, SSL pinning is checking to see whether the application is communicating with the right server. SSL pinning is an obstacle that has to be removed if you want to intercept the request which application is making.</p>
+<p>Some of the common methods to bypass SSL pinning are using <a href="https://github.com/sensepost/objection">objection</a> or using <a href="https://github.com/nabla-c0d3/ssl-kill-switch2">SSL Kill Switch 2</a>.</p>
+<h1 id="bypassing">Bypassing</h1>
+<p>This was all done on my iPhone running iOS version 14.4 nonjailbroken so immediately SSL Kill Switch 2 is not an option because it is working only on jailbroken devices and we are left with objection.</p>
+<p>After patching the application with FridaGadget inside(you can read how to do it <a href="/frida_patching/">here</a>) we can use objection.</p>
+<pre><code>$ objection -g Gadget explore
+
+</code></pre>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/ssl/">ssl</a>, 
+            
+                <a href="/tags/ios/">ios</a>, 
+            
+                <a href="/tags/iphone/">iPhone</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=SSL%20pinning%20is%20not%20that%20hard...%20sometimes&url=https%3a%2f%2flateralusd.github.io%2fssl_bypass_simple%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fssl_bypass_simple%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fssl_bypass_simple%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

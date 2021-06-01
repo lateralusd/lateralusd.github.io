@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tools on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/tools/</link>
+    <description>Recent content in tools on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 08 Oct 2020 14:54:09 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Modlishka &amp; Lateralus</title>
+      <link>https://lateralusd.github.io/lateralus/</link>
+      <pubDate>Thu, 08 Oct 2020 14:54:09 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/lateralus/</guid>
+      <description>Introduction Let&amp;rsquo;s first start by giving description of Modlishka and lateralus.
+Modlishka Modlishka is basically a reverse proxy which can be used to bypass 2FA, collect credentials and generally is helpful for phishing campaigns.
+It has a lot of options, such as:
+ Injecting custom javascript code (can be useful to rewrite parts of page) Substitutions of strings Credentials collection Domain mode hijacking  Here I will show only some parts of it, you should download it and give it a try.</description>
+    </item>
+    
+  </channel>
+</rss>

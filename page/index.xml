@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/page/</link>
+    <description>Recent content in Pages on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 01 Jun 2021 12:22:27 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About me</title>
+      <link>https://lateralusd.github.io/page/about/</link>
+      <pubDate>Tue, 01 Jun 2021 12:22:27 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/page/about/</guid>
+      <description># cat &amp;lt;&amp;lt;EOF heredoc&amp;gt; Just a pentester with a love for iOS, reverse engineering and programming in Go. heredoc&amp;gt; EOF </description>
+    </item>
+    
+    <item>
+      <title>Exploits</title>
+      <link>https://lateralusd.github.io/page/exploits/</link>
+      <pubDate>Tue, 01 Jun 2021 12:22:27 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/page/exploits/</guid>
+      <description>Exploits  Ubee EVW327 - &amp;lsquo;Enable Remote Access&amp;rsquo; Cross-Site Request Forgery (CSRF)  </description>
+    </item>
+    
+  </channel>
+</rss>

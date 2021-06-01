@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fuzzing on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/fuzzing/</link>
+    <description>Recent content in fuzzing on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 05 Feb 2021 19:04:36 +0100</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/fuzzing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>American F Lop</title>
+      <link>https://lateralusd.github.io/afl_fuzzing/</link>
+      <pubDate>Fri, 05 Feb 2021 19:04:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/afl_fuzzing/</guid>
+      <description>Introduction Recently, I have started fuzzing with AFL (American Fuzzy Lop) to try to find some vulnerabilities. For the target, I have chosen shell from prakhar1989 on the prakhar1989/shell repo.
+AFL is very versatile fuzzer which basically works like this:
+ Instrument binary Prepare input Start fuzzing and wait  Let&amp;rsquo;s go through all of these three steps in this post and in another post I will write how to analyze crashes.</description>
+    </item>
+    
+  </channel>
+</rss>

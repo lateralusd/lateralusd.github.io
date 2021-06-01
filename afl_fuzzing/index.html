@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>American F Lop &middot; </title>
+        <meta name="description" content="Fuzzing can be fun">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="American F Lop">
+<meta property="og:description" content="Fuzzing can be fun">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/afl_fuzzing/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">American F Lop</h1>
+    
+        <p class="post-description" itemprop="description">Fuzzing can be fun</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-02-05" itemprop="datePublished">Fri, Feb 5, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h2 id="introduction">Introduction</h2>
+<p>Recently, I have started fuzzing with AFL (American Fuzzy Lop) to try to find some vulnerabilities. For the target, I have chosen shell from prakhar1989 on the <a href="https://github.com/prakhar1989/shell">prakhar1989/shell repo</a>.</p>
+<p>AFL is very versatile fuzzer which basically works like this:</p>
+<ul>
+<li>Instrument binary</li>
+<li>Prepare input</li>
+<li>Start fuzzing and wait</li>
+</ul>
+<p>Let&rsquo;s go through all of these three steps in this post and in another post I will write how to analyze crashes.</p>
+<h2 id="prakhar1989shell">prakhar1989/shell</h2>
+<p>This is basically small shell, written probably for learning purposes with limited functionality. Clone it from github repo, run <code>make</code> on it and start exploring <strong>w4118_sh</strong> binary a bit.</p>
+<pre><code># git clone https://github.com/prakhar1989/shell.git
+# cd shell
+# make
+# ./w4118_sh
+$ /bin/ls
+Makefile	demo_run.txt	shell.h		README.md	shell.c		w4118_sh 
+</code></pre><h2 id="instrumenting-the-binary">Instrumenting the binary</h2>
+<p>Let&rsquo;s now instrument our binary to use AFL C compiler, called afl-clang-fast. Inside Makefile we need to substitute <code>gcc</code> with <code>${CC}</code> so we can pass our own CC variable to make process.</p>
+<p>It should look like this:</p>
+<pre><code>$ cat Makefile
+EXECUTABLE=w4118_sh
+
+all: shell
+
+shell: shell.c
+	${CC} -g -o $(EXECUTABLE) shell.c -Wall -W
+
+...
+</code></pre><p>Now for the compilation part we simply need to pass our own CC variable and instrumentaion is done. Two more steps to go.</p>
+<p>We also need to pass <code>AFL_HARDEN=1</code> variable which per <a href="https://afl-1.readthedocs.io/en/latest/user_guide.html#environmental-variables">AFL documentation</a> means:</p>
+<blockquote>
+<p>Setting AFL_HARDEN automatically adds code hardening options when invoking the downstream compiler. This currently includes -D_FORTIFY_SOURCE=2 and -fstack-protector-all. The setting is useful for catching non-crashing memory bugs at the expense of a very slight (sub-5%) performance loss.</p>
+</blockquote>
+<pre><code>$ CC=afl-clang-fast AFL_HARDEN=1 make`
+afl-clang-fast -g -o w4118_sh shell.c -Wall -W
+afl-cc ++3.01a by Michal Zalewski, Laszlo Szekeres, Marc Heuse - mode: LLVM-PCGUARD
+shell.c:398:4: warning: ignoring return value of function declared with 'warn_unused_result' attribute [-Wunused-result]
+                        pipe(pipes[i-1]);
+                        ^~~~ ~~~~~~~~~~
+SanitizerCoveragePCGUARD++3.01a
+[+] Instrumented 148 locations with no collisions (hardened mode).
+1 warning generated.
+</code></pre><h2 id="prepare-input">Prepare input</h2>
+<p>AFL expects us to provide input directory which will contain our input string, or binary depending on our case. This does not apply in all fuzzing cases, but for this one, this will work. Sample input should be something simple that would generally work inside our target like <code>/bin/ls</code> which we saw that works inside our shell binary.</p>
+<p>On the business now.</p>
+<pre><code>$ mkdir in
+$ echo '/bin/ls' &gt; in/a
+</code></pre><h2 id="fuzzing">Fuzzing</h2>
+<p>When we are done with previous two steps, it is now time to fuzz and the process is incredibly simple.</p>
+<pre><code>$ afl-fuzz -i in/ -o out ./w4118_sh
+[+] afl++ is open source, get it at https://github.com/AFLplusplus/AFLplusplus
+[+] NOTE: This is v3.x which changes defaults and behaviours - see README.md
+[+] No -M/-S set, autoconfiguring for &quot;-S default&quot;
+[*] Getting to work...
+[+] Using exponential power schedule (FAST)
+[+] Enabled testcache with 50 MB
+[*] Checking core_pattern...
+[+] You have 1 CPU core and 4 runnable tasks (utilization: 400%).
+[*] Setting up output directories...
+[+] Output directory exists but deemed OK to reuse.
+[*] Deleting old session data...
+[+] Output dir cleanup successful.
+[*] Scanning 'in/'...
+[+] Loaded a total of 1 seeds.
+[*] No auto-generated dictionary tokens to reuse.
+[*] Creating hard links for all input files...
+[*] Validating target binary...
+[*] Attempting dry run with 'id:000000,time:0,orig:a'...
+[*] Spinning up the fork server...
+[+] All right - fork server is up.
+[*] Target map size: 160
+    len = 8, map size = 26, exec speed = 1030 us
+[+] All test cases processed.
+[+] Here are some useful stats:
+
+    Test case count : 1 favored, 0 variable, 0 ignored, 1 total
+       Bitmap range : 26 to 26 bits (average: 26.00 bits)
+        Exec timing : 1030 to 1030 us (average: 1030 us)
+
+[*] No -t option specified, so I'll use exec timeout of 20 ms.
+[+] All set and ready to roll!
+</code></pre><p>Then you should screen like this:</p>
+<p><img src="/img/afl_runnin.png" alt="AFL running"></p>
+<p>Generally, you should wait minmum of one cycle to end your fuzzing.</p>
+<h2 id="confirming-crash">Confirming crash</h2>
+<p>After running for one minute, we already saw that we have created 18 unique crashes. Let&rsquo;s take on of those crash strings and run it on our binary to see that we really crashed it.</p>
+<p>Crashes are inside your <code>out/</code> directory which you passed to <code>afl-fuzz</code> using -o flag.</p>
+<pre><code>$ ls out/default/crashes
+id:000000,sig:11,src:000000,time:701,op:havoc,rep:2
+id:000001,sig:11,src:000000,time:2358,op:havoc,rep:8
+id:000002,sig:11,src:000000,time:4377,op:havoc,rep:16
+id:000003,sig:11,src:000000,time:4651,op:havoc,rep:16
+id:000004,sig:11,src:000038,time:10422,op:havoc,rep:16
+id:000005,sig:11,src:000038,time:10927,op:havoc,rep:4
+id:000006,sig:11,src:000038,time:11853,op:havoc,rep:2
+id:000007,sig:11,src:000038,time:13150,op:havoc,rep:16
+id:000008,sig:11,src:000038,time:14634,op:havoc,rep:16
+id:000009,sig:11,src:000010+000068,time:16819,op:splice,rep:2
+id:000010,sig:11,src:000043+000037,time:16936,op:splice,rep:16
+id:000011,sig:11,src:000043+000065,time:17750,op:splice,rep:8
+id:000012,sig:11,src:000043+000067,time:18260,op:splice,rep:8
+id:000013,sig:11,src:000043+000067,time:18284,op:splice,rep:8
+id:000014,sig:11,src:000047+000074,time:19681,op:splice,rep:4
+id:000015,sig:11,src:000041+000077,time:31486,op:splice,rep:4
+id:000016,sig:11,src:000050+000068,time:54679,op:splice,rep:2
+id:000017,sig:11,src:000100,time:69503,op:havoc,rep:16
+$ ./w4118_sh &lt; out/default/crashes/'id:000008,sig:11,src:000038,time:14634,op:havoc,rep:16'
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+error: No such file or directory
+Segmentation fault (core dumped)
+</code></pre><p>There you have it, we have really crashed our binary and in the second post I will analyze what exactly this vulnerability is and if it is really exploitable.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/fuzzing/">fuzzing</a>, 
+            
+                <a href="/tags/reverse-engineering/">reverse engineering</a>, 
+            
+                <a href="/tags/afl/">afl</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=American%20F%20Lop&url=https%3a%2f%2flateralusd.github.io%2fafl_fuzzing%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fafl_fuzzing%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fafl_fuzzing%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

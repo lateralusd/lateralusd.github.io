@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/post/</link>
+    <description>Recent content in Posts on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 14 Apr 2021 20:46:23 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Radare2 and iOS Apps</title>
+      <link>https://lateralusd.github.io/radare_objectivec/</link>
+      <pubDate>Wed, 14 Apr 2021 20:46:23 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/radare_objectivec/</guid>
+      <description>Introduction I have always wanted to use radare2 for reverse engineering. For those unfamiliar with radare2 it is basically like IDA or Ghidra but more cool. And for the debugging and analyzing applications, I have used all kinds of different tools but with r2 it feels like I have it all there needed.
+Per Wikipedia page:
+ Radare2 (also known as r2) is a complete framework for reverse-engineering and analyzing binaries; composed of a set of small utilities that can be used together or independently from the command line.</description>
+    </item>
+    
+    <item>
+      <title>SSL pinning is not that hard... sometimes</title>
+      <link>https://lateralusd.github.io/ssl_bypass_simple/</link>
+      <pubDate>Mon, 22 Feb 2021 17:22:16 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/ssl_bypass_simple/</guid>
+      <description>Introduction Recently I was pentesting an iOS application which of course had SSL pinning enables. For those who are not familiar what is SSL pinning, let&amp;rsquo;s take description from https://thesslstore.com:
+ Pinning is an optional mechanism that can be used to improve the security of a service or site that relies on SSL Certificates. Pinning allows you to specify a cryptographic identity that should be accepted by users visiting your site.</description>
+    </item>
+    
+    <item>
+      <title>American F Lop</title>
+      <link>https://lateralusd.github.io/afl_fuzzing/</link>
+      <pubDate>Fri, 05 Feb 2021 19:04:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/afl_fuzzing/</guid>
+      <description>Introduction Recently, I have started fuzzing with AFL (American Fuzzy Lop) to try to find some vulnerabilities. For the target, I have chosen shell from prakhar1989 on the prakhar1989/shell repo.
+AFL is very versatile fuzzer which basically works like this:
+ Instrument binary Prepare input Start fuzzing and wait  Let&amp;rsquo;s go through all of these three steps in this post and in another post I will write how to analyze crashes.</description>
+    </item>
+    
+    <item>
+      <title>Jailbreak bypass</title>
+      <link>https://lateralusd.github.io/jailbreak_bypass/</link>
+      <pubDate>Mon, 25 Jan 2021 18:05:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/jailbreak_bypass/</guid>
+      <description>Introduction There are thousands of posts just like this one which describes how you should approach bypassing jailbreak detection. This one isn&amp;rsquo;t different, just more step-by-step guide. We will be using frida and class-dump to bypass jailbreak detection. At the end of the post, there will be short snippet how to use theos instead of frida. You should have dumped .ipa file of the application and also you need to unzip .</description>
+    </item>
+    
+    <item>
+      <title>Code injection on nonjailbroken iPhone</title>
+      <link>https://lateralusd.github.io/theos_like/</link>
+      <pubDate>Wed, 09 Dec 2020 19:31:28 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/theos_like/</guid>
+      <description>Introduction A few days ago I was writing about injecting FridaGadget.dylib inside application on nonjailbroken device so I was thinking why not to do the same thing, just with custom code (code injection).
+The idea was to change some functionality of original application using dynamic library (dylib). Links for application are on my github and links are below.
+ https://github.com/lateralusd/WillGetHacked https://github.com/lateralusd/Haxor.dylib  Like in my previous post, the same prerequsities apply.</description>
+    </item>
+    
+    <item>
+      <title>FridaGadget.dylib on nonjailbroken iPhone</title>
+      <link>https://lateralusd.github.io/frida_patching/</link>
+      <pubDate>Sat, 05 Dec 2020 22:31:11 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/frida_patching/</guid>
+      <description>Introduction After trying for 7.30 hours to insert FridaGadget into the application, I have finally did it. It took reading bunch of tutorials and trials until it all clicked.
+Anyway, FridaGadget allows us instrumentation (lets say hacking) of an application on non jailbroken iPhone. I was using my iPhone which is running iOS 14.0.1.
+Prerequisities  Frida Gadget insert_dylib applesign ios-deploy Frida  Preparation The first thing you need it to get provisioning profile, or let&amp;rsquo;s call it your certificate which will be used to sign an application.</description>
+    </item>
+    
+    <item>
+      <title>Modlishka &amp; Lateralus</title>
+      <link>https://lateralusd.github.io/lateralus/</link>
+      <pubDate>Thu, 08 Oct 2020 14:54:09 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/lateralus/</guid>
+      <description>Introduction Let&amp;rsquo;s first start by giving description of Modlishka and lateralus.
+Modlishka Modlishka is basically a reverse proxy which can be used to bypass 2FA, collect credentials and generally is helpful for phishing campaigns.
+It has a lot of options, such as:
+ Injecting custom javascript code (can be useful to rewrite parts of page) Substitutions of strings Credentials collection Domain mode hijacking  Here I will show only some parts of it, you should download it and give it a try.</description>
+    </item>
+    
+    <item>
+      <title>Fun RCE with PHP upload</title>
+      <link>https://lateralusd.github.io/rce/</link>
+      <pubDate>Mon, 17 Aug 2020 13:09:06 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/rce/</guid>
+      <description>Introduction I know this is not about MacOS nor iOS but this was something that had to be written.
+Recently I had a web application penetration test on which I have found CSV injection and a great example of bypassing PHP image upload. Users with admin privileges had an option to change user&amp;rsquo;s profile picture which immediately caught my eye.
+App details  Fictional hostname: example.com Language: PHP Framework: Laravel  Analysis After messing around with trying to upload some php shell I was constantly getting 500 Internal Server Error which was kinda a clue to me that application is not allowing anything besides good ol&#39; images.</description>
+    </item>
+    
+    <item>
+      <title>Connecting the dots between Theos and Cycript/Cyrun</title>
+      <link>https://lateralusd.github.io/theos_cycript_cyrun/</link>
+      <pubDate>Fri, 03 Jul 2020 17:28:54 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/theos_cycript_cyrun/</guid>
+      <description>We have all been playing with cycript and changing those labels or perhaps we hid some views but we did not see the bigger picture of all of it, and the biggest question of them all is how it is related to class-dump and theos. To make things clear, im gonna take local news app.
+Theos Lets take definition from iphonedevwiki which says:
+ Theos is a cross-platform suite of development tools for managing, developing, and deploying iOS software without the use of Xcode.</description>
+    </item>
+    
+    <item>
+      <title>Debugging iOS apps on jailbroken iPhone</title>
+      <link>https://lateralusd.github.io/debugging/</link>
+      <pubDate>Fri, 03 Jul 2020 13:44:28 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/debugging/</guid>
+      <description>The first time I have tried to debug iOS apps on my jailbroken iPhone I hit the wall. There were many issues I had to solve so in this short post I&amp;rsquo;m gonna try to help you with this. Since you came to this post, I believe you already know what is lldb so I won&amp;rsquo;t talk about it and let&amp;rsquo;s get straight to the point.
+Prerequisites:
+ Jailbroken iPhone (mine is iPhone 11, 13.</description>
+    </item>
+    
+  </channel>
+</rss>

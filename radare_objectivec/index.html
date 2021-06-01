@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Radare2 and iOS Apps &middot; </title>
+        <meta name="description" content="Analyzing the iOS applications using radare2">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Radare2 and iOS Apps">
+<meta property="og:description" content="Analyzing the iOS applications using radare2">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/radare_objectivec/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Radare2 and iOS Apps</h1>
+    
+        <p class="post-description" itemprop="description">Analyzing the iOS applications using radare2</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-04-14" itemprop="datePublished">Wed, Apr 14, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h2 id="introduction">Introduction</h2>
+<p>I have always wanted to use <a href="https://github.com/radareorg/radare2">radare2</a> for reverse engineering. For those unfamiliar with radare2 it is basically like IDA or Ghidra but more cool. And for the debugging and analyzing applications, I have used all kinds of different tools but with r2 it feels like I have it all there needed.</p>
+<p>Per Wikipedia page:</p>
+<blockquote>
+<p>Radare2 (also known as r2) is a complete framework for reverse-engineering and analyzing binaries; composed of a set of small utilities that can be used together or independently from the command line.</p>
+</blockquote>
+<p>I will be doing the exact some analysis like in <a href="https://lateralusd.github.io/jailbreak_bypass/">Jailbreak Bypass</a> post but will do everything with r2 except for signing part.</p>
+<h2 id="loading-the-binary">Loading the binary</h2>
+<p>Extract your binary from the ipa file and pass it to the <code>r2</code> binary.</p>
+<pre><code class="language-$" data-lang="$"> -- radare2 is power, France is pancake.
+[0x100005490]&gt;
+</code></pre><h2 id="interface-and-method-analysis">Interface and method analysis</h2>
+<p>We will approach this in two ways:</p>
+<ul>
+<li>Getting straight to the class</li>
+<li>Getting the class name from the method name</li>
+</ul>
+<h3 id="getting-straight-to-the-class">Getting straight to the class</h3>
+<p>Since we are now in the r2, the <code>i</code> command is the main information command, and if we type <code>i?</code> we will see further commands.</p>
+<p>So let&rsquo;s type <code>i?</code> and see if there is anything classes related using the <code>~ class</code> which is equivalent to <code> | grep class</code> inside the shell.</p>
+<pre><code>[0x100005490]&gt; i? ~ class
+| ic                 List classes, methods and fields
+| icc                List classes, methods and fields in Header Format
+| icg                List classes as agn/age commands to create class hirearchy graphs
+| icq                List classes, in quiet mode (just the classname)
+| icqq               List classes, in quieter mode (only show non-system classnames)
+</code></pre><p>So we can see that we have have the <code>ic</code> command which lists classes, methods and fields. Let&rsquo;s use it and grep for our <code>RootCheckResult</code>.</p>
+<pre><code>[0x100005490]&gt; ic ~ RootCheckResult
+0x100469788 [0x100005bc8 - 0x100005c48]    128 class 0 RootCheckResult :: NSObject
+</code></pre><p>Now, if we pass just the name of the class to the <code>ic</code> we will get it&rsquo;s methods.</p>
+<pre><code>[0x100005490]&gt; ic RootCheckResult
+class RootCheckResult
+0x100005bc8 method RootCheckResult      init
+0x100005c24 method RootCheckResult      isRooted
+0x100005c2c method RootCheckResult      setIsRooted:
+0x100005c34 method RootCheckResult      rootCheckFailed
+0x100005c3c method RootCheckResult      setRootCheckFailed:
+0x100005c48 method RootCheckResult      .cxx_destruct
+</code></pre><p>We can see that our <code>isRooted</code> method is indeed inside of RootCheckResult class.</p>
+<h3 id="getting-the-class-name-from-the-method-name">Getting the class name from the method name</h3>
+<p>In this approach we will do the same as we did in the original post, by trying to find the method responsible for root check. To shorten our time, let&rsquo;s say we now that the method <code>isRooted</code> is the one we are after. So let&rsquo;s see how to that exactly.</p>
+<p>First let&rsquo;s find the address of the <code>isRooted</code> method.</p>
+<pre><code>[0x100005490]&gt; ic ~ isRooted
+0x100005c24 method 1      isRooted
+</code></pre><p>We have found our <code>isRooted</code> method at the address of <em>0x100005c24</em> so let&rsquo;s seek to that address using the <code>s</code> command and dump 10 bytes from that address.</p>
+<pre><code>[0x100005490]&gt; s 0x100005c24
+[0x100005c24]&gt; pd 10$$
+            ;-- func.100005c24:
+            ;-- method.RootCheckResult.isRooted:
+            0x100005c24      00204039       ldrb w0, [x0, 8]           ; [0x8:4]=-1 ; 8
+            0x100005c28      c0035fd6       ret
+            ;-- func.100005c2c:
+            ;-- method.RootCheckResult.setIsRooted::
+            0x100005c2c      02200039       strb w2, [x0, 8]
+            0x100005c30      c0035fd6       ret
+            ;-- func.100005c34:
+</code></pre><p>We can see by the comments that the method <code>isRooted</code> is inside the <code>RootCheckResult</code> interface.</p>
+<p>This method of searching is called cross referencing or XREFs.</p>
+<h2 id="patching">Patching</h2>
+<p>Copy your binary and load the copied one into the r2 with write mode.</p>
+<pre><code>$ cp original_binary copy_binary
+$ r2 -w copy_binary
+</code></pre><p>Let&rsquo;s seek to our <code>isRooted</code> method and disassemble it.</p>
+<pre><code>[0x100005490]&gt; ic ~ isRooted
+0x100005c24 method 1      isRooted
+[0x100005c24]&gt; s 0x100005c24
+[0x100005c24]&gt; pd 2$$
+            ;-- func.100005c24:
+┌ 8: method.RootCheckResult.isRooted (int64_t arg1);
+│ bp: 0 (vars 0, args 0)
+│ sp: 0 (vars 0, args 0)
+│ rg: 1 (vars 0, args 1)
+│           0x100005c24      00204039       ldrb w0, [x0, 8]           ; [0x8:4]=-1 ; 8 ; arg1
+└           0x100005c28      c0035fd6       ret
+</code></pre><p>We can see that we are loading our <em>w0</em> return register from the <em>x0 + 8</em> address.</p>
+<p>So let&rsquo;s change that instruction to always return 0 meaning that the device is not rooted.</p>
+<p>To do that, we will use <code>w</code> command. Let&rsquo;s see our options for the command.</p>
+<pre><code>[0x100005490]&gt; w?
+Usage: w[x] [str] [&lt;file] [&lt;&lt;EOF] [@addr]
+| w[1248][+-][n]       increment/decrement byte,word..
+| w foobar             write string 'foobar'
+| w0 [len]             write 'len' bytes with value 0x00
+| w6[de] base64/hex    write base64 [d]ecoded or [e]ncoded string
+| wa[?] push ebp       write opcode, separated by ';' (use '&quot;' around the command)
+| waf f.asm            assemble file and write bytes
+| waF f.asm            assemble file and write bytes and show 'wx' op with hexpair bytes of assembled code
+| wao[?] op            modify opcode (change conditional of jump. nop, etc)
+| wA[?] r 0            alter/modify opcode at current seek (see wA?)
+| wb 010203            fill current block with cyclic hexpairs
+</code></pre><p>We can notice that we have <code>wao</code> command which is exactly what we want.</p>
+<pre><code>[0x100005490]&gt; wao?
+| wao [op]  performs a modification on current opcode
+| wao nop   nop current opcode
+| wao jinf  assemble an infinite loop
+| wao jz    make current opcode conditional (zero)
+| wao jnz   make current opcode conditional (not zero)
+| wao ret1  make the current opcode return 1
+| wao ret0  make the current opcode return 0
+| wao retn  make the current opcode return -1
+| wao nocj  remove conditional operation from branch (make it unconditional)
+| wao trap  make the current opcode a trap
+| wao recj  reverse (swap) conditional branch instruction
+| WIP:      not all archs are supported and not all commands work on all archs
+</code></pre><p>We can notice the command <code>wao ret0</code> which makes the <em>current</em> opcode return 1. Since we are already on that instruction we don&rsquo;t need to seek any further.</p>
+<pre><code>[0x100005c24]&gt; wao ret0
+Written 8 byte(s) (mov x0, 0,,ret) = wx 000080d2c0035fd6
+[0x100005c24]&gt; pd 2$$
+            ;-- func.100005c24:
+┌ 8: method.RootCheckResult.isRooted (int64_t arg1);
+│ bp: 0 (vars 0, args 0)
+│ sp: 0 (vars 0, args 0)
+│ rg: 1 (vars 0, args 1)
+│           0x100005c24      000080d2       movz x0, 0                 ; arg1
+└           0x100005c28      c0035fd6       ret
+</code></pre><p>After writing and disassembling we can see that we no longer see ldrb instruction but instead loading 0 into the x0 register.</p>
+<p>Quit radare, copy the binary into the Payload directory, zip it, sign it and install on your device.</p>
+<p>This was really short introduction to radare and jailbreak bypass and will for sure publish some posts regarding radare. I hope you like it :)</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/ios/">ios</a>, 
+            
+                <a href="/tags/iphone/">iPhone</a>, 
+            
+                <a href="/tags/reverse-engineering/">reverse engineering</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Radare2%20and%20iOS%20Apps&url=https%3a%2f%2flateralusd.github.io%2fradare_objectivec%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fradare_objectivec%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fradare_objectivec%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

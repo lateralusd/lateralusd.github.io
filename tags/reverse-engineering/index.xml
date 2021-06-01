@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>reverse engineering on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/reverse-engineering/</link>
+    <description>Recent content in reverse engineering on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 14 Apr 2021 20:46:23 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/reverse-engineering/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Radare2 and iOS Apps</title>
+      <link>https://lateralusd.github.io/radare_objectivec/</link>
+      <pubDate>Wed, 14 Apr 2021 20:46:23 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/radare_objectivec/</guid>
+      <description>Introduction I have always wanted to use radare2 for reverse engineering. For those unfamiliar with radare2 it is basically like IDA or Ghidra but more cool. And for the debugging and analyzing applications, I have used all kinds of different tools but with r2 it feels like I have it all there needed.
+Per Wikipedia page:
+ Radare2 (also known as r2) is a complete framework for reverse-engineering and analyzing binaries; composed of a set of small utilities that can be used together or independently from the command line.</description>
+    </item>
+    
+    <item>
+      <title>American F Lop</title>
+      <link>https://lateralusd.github.io/afl_fuzzing/</link>
+      <pubDate>Fri, 05 Feb 2021 19:04:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/afl_fuzzing/</guid>
+      <description>Introduction Recently, I have started fuzzing with AFL (American Fuzzy Lop) to try to find some vulnerabilities. For the target, I have chosen shell from prakhar1989 on the prakhar1989/shell repo.
+AFL is very versatile fuzzer which basically works like this:
+ Instrument binary Prepare input Start fuzzing and wait  Let&amp;rsquo;s go through all of these three steps in this post and in another post I will write how to analyze crashes.</description>
+    </item>
+    
+  </channel>
+</rss>

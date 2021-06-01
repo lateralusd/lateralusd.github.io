@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Connecting the dots between Theos and Cycript/Cyrun &middot; </title>
+        <meta name="description" content="What is the releationship between the two">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Connecting the dots between Theos and Cycript/Cyrun">
+<meta property="og:description" content="What is the releationship between the two">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/theos_cycript_cyrun/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Connecting the dots between Theos and Cycript/Cyrun</h1>
+    
+        <p class="post-description" itemprop="description">What is the releationship between the two</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2020-07-03" itemprop="datePublished">Fri, Jul 3, 2020</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>We have all been playing with cycript and changing those labels or perhaps we hid some views but we did not see the bigger picture of all of it, and the biggest question of them all is how it is related to <strong>class-dump</strong> and <strong>theos</strong>. To make things clear, im gonna take local news app.</p>
+<h2 id="theos">Theos</h2>
+<p>Lets take definition from <a href="http://iphonedevwiki.net/index.php/Theos">iphonedevwiki</a> which says:</p>
+<blockquote>
+<p>Theos is a cross-platform suite of development tools for managing, developing, and deploying iOS software without the use of Xcode.</p>
+</blockquote>
+<p>What this means is that you can override certain app funcionality, extend it or remove it completely. Result of theos is called <em>tweak</em>. Let&rsquo;s say you have a functionality in app which shows advertisements, you could make a theos tweak (override method) not to show those advertisements.</p>
+<h2 id="class-dump">Class-dump</h2>
+<p>Class-dump tool or alternative version class-dump-z which is faster is basically what its name says. It allows you to dump all classes as well as their methods inside the specific app binary. I like to install it on my Mac and run everything from there because it is easier for me. The first thing I do is dump application using tools like <strong>frida-ios-dump</strong> or <strong>Clutch</strong>, extract the <em>.ipa</em> file and run the class-dump against the binary.</p>
+<p>Let&rsquo;s say app&rsquo;s binary is called <em>NotMe</em>, good combination of flags would be:<br>
+<code>$ class-dump -S -s -H NotMe -o /tmp/NotMeHeaders</code></p>
+<p>Run <code>class-dump --help</code> to see what each options means.</p>
+<h2 id="cycript-or-cyrun-what-the-hell">Cycript or cyrun, what the hell</h2>
+<p>The name of the original tool is called <strong>cycript</strong> which was made by saurik himself. On certain versions of jailbreak cycript does not work, and there is alternative called <em>cyrun</em>.</p>
+<p>Cycript enables you to attach to the application and inspect it in runtime. You can view all those views, labels, textfields etc. You can manipulate those elements however you want according to ObjC rules. Cycript is also useful to find which view controller is responsible for certain element, or which methods gets called on let&rsquo;s say button click.</p>
+<h2 id="connecting-everything">Connecting everything</h2>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/theos/">theos</a>, 
+            
+                <a href="/tags/cycript/">cycript</a>, 
+            
+                <a href="/tags/cyrun/">cyrun</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Connecting%20the%20dots%20between%20Theos%20and%20Cycript%2fCyrun&url=https%3a%2f%2flateralusd.github.io%2ftheos_cycript_cyrun%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2ftheos_cycript_cyrun%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2ftheos_cycript_cyrun%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+

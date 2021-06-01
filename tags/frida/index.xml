@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>frida on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/frida/</link>
+    <description>Recent content in frida on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 25 Jan 2021 18:05:36 +0100</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/frida/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jailbreak bypass</title>
+      <link>https://lateralusd.github.io/jailbreak_bypass/</link>
+      <pubDate>Mon, 25 Jan 2021 18:05:36 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/jailbreak_bypass/</guid>
+      <description>Introduction There are thousands of posts just like this one which describes how you should approach bypassing jailbreak detection. This one isn&amp;rsquo;t different, just more step-by-step guide. We will be using frida and class-dump to bypass jailbreak detection. At the end of the post, there will be short snippet how to use theos instead of frida. You should have dumped .ipa file of the application and also you need to unzip .</description>
+    </item>
+    
+    <item>
+      <title>FridaGadget.dylib on nonjailbroken iPhone</title>
+      <link>https://lateralusd.github.io/frida_patching/</link>
+      <pubDate>Sat, 05 Dec 2020 22:31:11 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/frida_patching/</guid>
+      <description>Introduction After trying for 7.30 hours to insert FridaGadget into the application, I have finally did it. It took reading bunch of tutorials and trials until it all clicked.
+Anyway, FridaGadget allows us instrumentation (lets say hacking) of an application on non jailbroken iPhone. I was using my iPhone which is running iOS 14.0.1.
+Prerequisities  Frida Gadget insert_dylib applesign ios-deploy Frida  Preparation The first thing you need it to get provisioning profile, or let&amp;rsquo;s call it your certificate which will be used to sign an application.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ssl on lateralusd&#39;s blog</title>
+    <link>https://lateralusd.github.io/tags/ssl/</link>
+    <description>Recent content in ssl on lateralusd&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 22 Feb 2021 17:22:16 +0100</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/ssl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SSL pinning is not that hard... sometimes</title>
+      <link>https://lateralusd.github.io/ssl_bypass_simple/</link>
+      <pubDate>Mon, 22 Feb 2021 17:22:16 +0100</pubDate>
+      
+      <guid>https://lateralusd.github.io/ssl_bypass_simple/</guid>
+      <description>Introduction Recently I was pentesting an iOS application which of course had SSL pinning enables. For those who are not familiar what is SSL pinning, let&amp;rsquo;s take description from https://thesslstore.com:
+ Pinning is an optional mechanism that can be used to improve the security of a service or site that relies on SSL Certificates. Pinning allows you to specify a cryptographic identity that should be accepted by users visiting your site.</description>
+    </item>
+    
+  </channel>
+</rss>

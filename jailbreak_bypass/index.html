@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Jailbreak bypass &middot; </title>
+        <meta name="description" content="Simple jailbreak detection bypass">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Jailbreak bypass">
+<meta property="og:description" content="Simple jailbreak detection bypass">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/jailbreak_bypass/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Jailbreak bypass</h1>
+    
+        <p class="post-description" itemprop="description">Simple jailbreak detection bypass</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-01-25" itemprop="datePublished">Mon, Jan 25, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h2 id="introduction">Introduction</h2>
+<p>There are thousands of posts just like this one which describes how you should approach bypassing jailbreak detection. This one isn&rsquo;t different, just more step-by-step guide. We will be using <em>frida</em> and <em>class-dump</em> to bypass jailbreak detection. At the end of the post, there will be short snippet how to use theos instead of frida. You should have dumped .ipa file of the application and also you need to unzip .ipa file.</p>
+<h2 id="information-gathering">Information Gathering</h2>
+<p>After running the application, we are being presented with a sheet view that shows us a message that we can&rsquo;t use the application on jailbroken device. In order to bypass this, we first need to check whether there are some methods which are doing this check.</p>
+<p>After opening the app we are greeted with a view like the one below which translates to &ldquo;<em>It is not possible to use CLIENT NAME application on the devices that allows escalation of privileges to system level. For more details, please contant support.</em>&rdquo;</p>
+<p><img src="/img/jailbroken_running.png" alt="View on jailbroken device"></p>
+<p>First, let&rsquo;s dump the classes to see if we will find anything interesting using <em>class-dump</em> tool.</p>
+<p><strong>NOTE:</strong>
+<em>Substitute word Example.app with the app you have</em>.</p>
+<pre><code>$ ~/Downloads/class-dump -S -s -H Payload/Example.app/Example -o /tmp/example_headers
+</code></pre><p>Let&rsquo;s examine these headers.</p>
+<pre><code>$ cd /tmp/example_headers
+$ ls -l | grep -iP root|jailbreak
+[ ... REDACTED ... ]
+-rw-r--r--  1 daemon1  wheel    545 Jan 26 09:26 RootCheckResult.h
+-rw-r--r--  1 daemon1  wheel    910 Jan 26 09:26 RootManagerModule.h
+</code></pre><p>We have found two interesting header files in there, <em>RootCheckResult.h</em> and <em>RootManagerModule.h</em>. Lets examine both and see what we will found in there.</p>
+<pre><code>$ cat RootCheckResult.h
+//
+//     Generated by class-dump 3.5 (64 bit) (Debug version compiled Sep 17 2017 16:24:48).
+//
+//     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2015 by Steve Nygard.
+//
+
+#import &lt;objc/NSObject.h&gt;
+
+@class NSString;
+
+@interface RootCheckResult : NSObject
+{
+    _Bool _isRooted;
+    NSString *_rootCheckFailed;
+}
+
+- (void).cxx_destruct;
+- (id)init;
+@property(nonatomic) _Bool isRooted; // @synthesize isRooted=_isRooted;
+@property(retain, nonatomic) NSString *rootCheckFailed; // @synthesize rootCheckFailed=_rootCheckFailed;
+
+@end
+</code></pre><p>And <em>RootManagerModule.h</em>:</p>
+<pre><code>$ cat RootManagerModule.h
+//
+//     Generated by class-dump 3.5 (64 bit) (Debug version compiled Sep 17 2017 16:24:48).
+//
+//     class-dump is Copyright (C) 1997-1998, 2000-2001, 2004-2015 by Steve Nygard.
+//
+
+#import &lt;objc/NSObject.h&gt;
+
+#import &quot;RCTBridgeModule-Protocol.h&quot;
+
+@class NSString, RCTBridge;
+@protocol OS_dispatch_queue;
+
+@interface RootManagerModule : NSObject &lt;RCTBridgeModule&gt;
+{
+}
+
++ (void)load;
++ (id)moduleName;
+- (_Bool)canViolateSandbox;
+- (_Bool)checkPaths;
+- (_Bool)checkSchemes;
+- (id)constantsToExport;
+- (id)isJailBroken;
+- (id)pathsToCheck;
+- (id)schemesToCheck;
+
+// Remaining properties
+@property(readonly, nonatomic) __weak RCTBridge *bridge;
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly, copy) NSString *description;
+@property(readonly) unsigned long long hash;
+@property(readonly, nonatomic) NSObject&lt;OS_dispatch_queue&gt; *methodQueue;
+@property(readonly) Class superclass;
+
+@end
+
+</code></pre><p>We can see that we have property called <em>isRooted</em> inside RootCheckResult.h header file.</p>
+<p>Let&rsquo;s write a short frida script to see when this property get&rsquo;s called. I will be using my own <a href="https://github.com/lateralusd/Helper-Scripts/blob/main/skeleton.sh">skeleton.sh</a> script to generate script for frida.</p>
+<pre><code>$ ./skeleton.sh '-[RootCheckResult isRooted]' script.js
+</code></pre><p>Let&rsquo;s see the content of it.</p>
+<pre><code>$ cat script.js
+var impl = ObjC.classes.RootCheckResult[&quot;- isRooted&quot;];
+
+Interceptor.attach(impl.implementation, {
+	onEnter: function(args) {
+		console.log(&quot;Got called&quot;);
+	},
+	onLeave: function(retval) {
+		console.log(&quot;Leaving function, retval is =&gt; &quot; + retval);
+	}
+});
+</code></pre><p>Let&rsquo;s now run our application with frida using early instrumentation.</p>
+<pre><code>$ frida -U -f com.echo.example -l script.js --no-pause
+     ____
+    / _  |   Frida 14.0.8 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    &gt; _  |   Commands:
+   /_/ |_|       help      -&gt; Displays the help system
+   . . . .       object?   -&gt; Display information about 'object'
+   . . . .       exit/quit -&gt; Exit
+   . . . .
+   . . . .   More info at https://www.frida.re/docs/home/
+Spawned `com.echo.example`. Resuming main thread!
+[iPhone::com.echo.example]-&gt; Got called
+Leaving function, retval is =&gt; 0x1
+
+</code></pre><h2 id="bypassing">Bypassing</h2>
+<p>So we can see that our method get&rsquo;s called and that is returning 0x1 as an indication that the device is jailbroken. If we overwrite the return value, we may be able to bypass the check. Our updated <em>script.js</em> file looks like this:</p>
+<pre><code>$ cat script.js
+var impl = ObjC.classes.RootCheckResult[&quot;- isRooted&quot;];
+
+Interceptor.attach(impl.implementation, {
+	onEnter: function(args) {
+		console.log(&quot;Got called&quot;);
+	},
+	onLeave: function(retval) {
+		var newRetval = ptr(&quot;0x0&quot;); // Create a new variable with value 0x0
+		retval.replace(newRetval);  // Replace old return value with the new one we have created
+		console.log(&quot;Leaving function, retval is =&gt; &quot; + retval);
+	}
+});
+</code></pre><p>Let&rsquo;s now run it and hope for the best.</p>
+<pre><code>$ frida -U -f com.echo.example -l script.js --no-pause 
+     ____
+    / _  |   Frida 14.0.8 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    &gt; _  |   Commands:
+   /_/ |_|       help      -&gt; Displays the help system
+   . . . .       object?   -&gt; Display information about 'object'
+   . . . .       exit/quit -&gt; Exit
+   . . . .
+   . . . .   More info at https://www.frida.re/docs/home/
+Spawned `com.echo.example`. Resuming main thread!
+[iPhone::com.echo.example]-&gt; Got called
+Leaving function, retval is =&gt; 0x0
+</code></pre><p>We can see that we have indeed overwritten the return value and if we take a look on the application, we can see that we have bypassed it.</p>
+<p><img src="/img/after_bypassing.png" alt="After bypassing"></p>
+<h2 id="theos-instead-of-frida">Theos instead of frida</h2>
+<p>Fire up your <em>nic.pl</em>, select <em>iphone/tweak</em> and choose correct bundle for your application. In order to bypass this check using Theos, my Tweak.xmfile will look like this:</p>
+<pre><code>$ cat Tweak.x
+
+%hook RootCheckResult
+
+-(_Bool) isRooted {
+	return false;
+}
+
+%end
+</code></pre>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/ios/">ios</a>, 
+            
+                <a href="/tags/iphone/">iphone</a>, 
+            
+                <a href="/tags/frida/">frida</a>, 
+            
+                <a href="/tags/jailbreak/">jailbreak</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Jailbreak%20bypass&url=https%3a%2f%2flateralusd.github.io%2fjailbreak_bypass%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fjailbreak_bypass%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fjailbreak_bypass%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+
