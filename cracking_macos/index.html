@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Cracking Mac OS applications for fun and no profit &middot; </title>
+        <meta name="description" content="Cracking or should I say patching of Mac OS applications">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.83.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Cracking Mac OS applications for fun and no profit">
+<meta property="og:description" content="Cracking or should I say patching of Mac OS applications">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/cracking_macos/">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
+        <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://lateralusd.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/lateralusd" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:del0x0rean@tutanota.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Exploits" href="/page/exploits">Exploits</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Cracking Mac OS applications for fun and no profit</h1>
+    
+        <p class="post-description" itemprop="description">Cracking or should I say patching of Mac OS applications</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-06-08" itemprop="datePublished">Tue, Jun 8, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <h1 id="introduction">Introduction</h1>
+<p>I was thinking about showing you guys how similar iOS and Mac OS applications are. What is the better way than cracking the software on Mac OS. I would not disclose the name of the application and images will be blurred because I do not want to get in trouble lol.</p>
+<p>Originally, I was using <a href="https://www.hopperapp.com">Hopper</a> to patch the binary, but I guess not everyone wants to pay for the things so we will be using <code>r2</code>.</p>
+<p>The method I will be using is kinda similar to the one talked in the <a href="http://localhost:1313/theos_like/">Code injection on nonjailbroken iPhone</a> with <code>.dylib</code>.</p>
+<p>We will also be using <code>frida</code> to the analysis and a couple of other programs.</p>
+<h1 id="analysis">Analysis</h1>
+<p>When we open our target application, we are greeted with the following image:</p>
+<p><img src="/img/app_run.png" alt="App run"></p>
+<p>Let&rsquo;s load our binary, on MacOS apps usually located at <code>/Application/NameOfApp.app/Contents/MacOs/</code> and see are there any classes with name <em>License</em> or <em>Demo</em>.</p>
+<pre><code>$ r2 /Application/Target.app/Contents/MacOS/Binary
+-- Wow, my cat knows radare2 hotkeys better than me!
+[0x1000019b8]&gt; ic ~ License
+0x1000306b0 [0x100007c54 - 0x100008b11]   3773 class 0 License :: NSObject
+[0x1000019b8]&gt; ic ~ Demo
+0x100030a20 [0x10001b089 - 0x10001b440]    951 class 0 DemoDialogController :: NSObject
+</code></pre><p>So we got some hits, <code>License</code> class appears to be NSObject, while Demo is DemoDialogController. We will focus on License part first.</p>
+<p>Let&rsquo;s see the methods available inside of our License class.</p>
+<pre><code>[0x1000019b8]&gt; ic License
+class License
+0x100008855 method License      setCustomer:
+0x100008825 method License      customer
+0x100008874 method License      setEmail:
+0x10000883d method License      email
+0x100007c54 method License      description
+0x10000845d method License      isDemo
+0x1000084b5 method License      checkAndStoreLicense:
+0x100007fc7 method License      init
+0x100008b11 method License c    checkLicense:
+0x100007d6f method License c    bestLicenseFile
+0x100007de7 method License c    checkStoredLicense
+0x100008893 method License c    reportLicenseState:
+0x100007e1e method License c    reportStoredLicenseState
+0x100007e55 method License c    storedLicenseState
+0x100007e9f method License c    setStoredLicenseState:
+0x100008274 method License c    verifyLicense:withLicenseServer:
+0x100007f0b method License c    existsStoredLicenseBackup
+0x100007f39 method License c    existsStoredLicense
+0x100007f98 method License c    sharedInstance
+</code></pre><p>We got a bunch of them, but the one which caught my intention the most is the <code>isDemo</code> method.</p>
+<p>Let&rsquo;s use frida to see what is going on here.</p>
+<p>I will use my own script to quickly generate the js script to intercept the method.</p>
+<pre><code>$ git clone https://lateralusd.github.com/Helper-Scripts.git &amp;&amp; cd Helper-Scripts/
+$ ./skeleton.sh '-[License isDemo]' script.js
+</code></pre><p>Let&rsquo;s now attach frida with the script but before that obtain we need to obtain the applications PID.</p>
+<p><img src="/img/frida_inter.png" alt="Frida output"></p>
+<p>From the output, we can see that the return value is 0x1 which is true, meaning we are in demo mode. Let&rsquo;s change that.</p>
+<p>This is the most likely the method we need to patch.</p>
+<h1 id="patching">Patching</h1>
+<p>Open up the Xcode and create a new project. Select macOS, click on Library and then go Next. Give it a name and choose <code>Static</code> as <code>Type</code>.</p>
+<p>It should look something like this:</p>
+<p><img src="/img/xcode_library.png" alt="Create static library"></p>
+<p>Now, let&rsquo;s write our code to substitute the methods. I am not gonna explain what each line means individually because it is already explained in the post linked at the top.</p>
+<p>We need:</p>
+<ul>
+<li>patch <code>-[License isDemo]</code> method</li>
+<li>make it return <code>false</code></li>
+</ul>
+<p><img src="/img/xcode_code.png" alt="Code"></p>
+<p>Basically, we are creating our own method which will replace <code>-[License isDemo]</code>. Our method will always return false.</p>
+<p>Let&rsquo;s build the library and add it to our binary.</p>
+<p>First, lets convert it to dylib.</p>
+<pre><code>$ xcrun clang -shared -all_load -o liblateralusd.dylib liblateralusd.a
+$ file liblateralusd.dylib
+liblateralusd.dylib: Mach-O 64-bit dynamically linked shared library x86_64
+</code></pre><p>Copy it to application directory, I will put it next to the binary.</p>
+<pre><code>$ cp liblateralusd.dylib /Applications/Target.app/Contents/MacOS/
+$ insert_dylib --strip-codesig --inplace @executable_path/liblateralusd.dylib /Applications/Target.app/Contents/MacOS/Binary
+$ install_name_tool -add_rpath @executable_path/. /Applications/Target.app/Contents/MacOS/Binary
+</code></pre><p>If we now run the app we would see the different screen and we patched our application. No more annoying window.</p>
+<p><img src="/img/mac_cracked.png" alt="Patched"></p>
+<p>And that is it, we have successfully cracked our application. If you have any questions, do not hesitate to contact me.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/reverse-engineering/">reverse engineering</a>, 
+            
+                <a href="/tags/frida/">frida</a>, 
+            
+                <a href="/tags/code-injection/">code injection</a>, 
+            
+                <a href="/tags/dylib/">dylib</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Cracking%20Mac%20OS%20applications%20for%20fun%20and%20no%20profit&url=https%3a%2f%2flateralusd.github.io%2fcracking_macos%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fcracking_macos%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fcracking_macos%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="lateralusd&#39;s blog" href="https://lateralusd.github.io/">lateralusd&#39;s blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2021 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://lateralusd.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://lateralusd.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://lateralusd.github.io/js/scripts.js"></script>
+    </body>
+</html>
+
