@@ -5,7 +5,16 @@
     <link>https://lateralusd.github.io/tags/lldb/</link>
     <description>Recent content in lldb on lateralusd&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 03 Jul 2020 13:44:28 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/lldb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Jun 2021 02:47:05 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/lldb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Connecting Frida to LLDB</title>
+      <link>https://lateralusd.github.io/lldb_frida/</link>
+      <pubDate>Sun, 20 Jun 2021 02:47:05 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/lldb_frida/</guid>
+      <description>Introduction Coming soon&amp;hellip;</description>
+    </item>
+    
     <item>
       <title>Debugging iOS apps on jailbroken iPhone</title>
       <link>https://lateralusd.github.io/debugging/</link>

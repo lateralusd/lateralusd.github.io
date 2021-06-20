@@ -3,23 +3,21 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Posts &middot; </title>
-        <meta name="description" content="Lets play with iOS and Mac OS">
+        <title>Connecting Frida to LLDB &middot; </title>
+        <meta name="description" content="Using python api to connect the greatest">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
         <meta name="generator" content="Hugo 0.83.1" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta property="og:title" content="Posts">
-<meta property="og:description" content="Lets play with iOS and Mac OS">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://lateralusd.github.io/post/">
+        <meta property="og:title" content="Connecting Frida to LLDB">
+<meta property="og:description" content="Using python api to connect the greatest">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/lldb_frida/">
         <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
         <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-        
-            <link href="/post/index.xml" rel="alternate" type="application/rss+xml">
         
         
         
@@ -76,48 +74,80 @@
             <div id="container">
 
 
-<div id="post-index" class="container">
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Connecting Frida to LLDB</h1>
     
-    <header class="post-header">
-        <h1 class="post-title" itemprop="name">lateralus daemons because I love daemons</h1>
-        <p>Lets play with iOS and Mac OS</p>
-    </header>
+        <p class="post-description" itemprop="description">Using python api to connect the greatest</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-06-20" itemprop="datePublished">Sun, Jun 20, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
 
+        <div class="post-content clearfix" itemprop="articleBody">
+    
 
+    <h1 id="introduction">Introduction</h1>
+<p>Coming soon&hellip;</p>
 
-    <ol class="post-list">
-        
-        
-            <li class="post-stub" itemprop="blogPost" itemscope="" itemtype="https://schema.org/BlogPosting">
-    <a href="https://lateralusd.github.io/theos_cycript_cyrun/" itemprop="url" title="Go to post detail">
-        <h4 class="post-stub-title" itemprop="name">Connecting the dots between Theos and Cycript/Cyrun</h4>
-        <time class="post-stub-date" datetime="2020-07-03">Published Fri, Jul 3, 2020</time>
-        
-    </a>
-</li>
-        
-            <li class="post-stub" itemprop="blogPost" itemscope="" itemtype="https://schema.org/BlogPosting">
-    <a href="https://lateralusd.github.io/debugging/" itemprop="url" title="Go to post detail">
-        <h4 class="post-stub-title" itemprop="name">Debugging iOS apps on jailbroken iPhone</h4>
-        <time class="post-stub-date" datetime="2020-07-03">Published Fri, Jul 3, 2020</time>
-        
-    </a>
-</li>
-        
-    </ol>
+</div>
 
-    <div class="post-navigation">
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/frida/">frida</a>, 
+            
+                <a href="/tags/reverse-engineering/">reverse engineering</a>, 
+            
+                <a href="/tags/lldb/">lldb</a>, 
+            
+                <a href="/tags/debugging/">debugging</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Connecting%20Frida%20to%20LLDB&url=https%3a%2f%2flateralusd.github.io%2flldb_frida%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
         
 
-    <nav class="pagination" role="navigation">
-        <span class="page-number">Page 2 of 2</span>
         
-            <a class="newer-posts" href="/post/">&larr; Newer Posts</a>
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2flldb_frida%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
         
-        
-    </nav>
 
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2flldb_frida%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
     </div>
+</footer>
+
+        
+    </article>
 </div>
 
             </div>
@@ -149,3 +179,4 @@
         <script src="https://lateralusd.github.io/js/scripts.js"></script>
     </body>
 </html>
+
