@@ -5,7 +5,20 @@
     <link>https://lateralusd.github.io/post/</link>
     <description>Recent content in Posts on lateralusd&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 20 Jun 2021 02:47:05 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Jun 2021 19:29:32 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>New LLDB Scripts</title>
+      <link>https://lateralusd.github.io/new_scripts/</link>
+      <pubDate>Fri, 25 Jun 2021 19:29:32 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/new_scripts/</guid>
+      <description>Introduction On the last two pentests I had to work with application with short pentest duration. I did not have time to bypass RASP and things like that.
+As I needed to traverse directories and inspect files, I have created four lldb scripts to do just that.
+The scripts are:
+ appEnv cat ls download  appEnv Print the path the applications bundle directory as well as library directory.
+cat Print the output of file, mostly used for text files.</description>
+    </item>
+    
     <item>
       <title>Connecting Frida to LLDB</title>
       <link>https://lateralusd.github.io/lldb_frida/</link>

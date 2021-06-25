@@ -2,6 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://lateralusd.github.io/</loc>
+    <lastmod>2021-06-25T19:29:32+02:00</lastmod>
+  </url><url>
+    <loc>https://lateralusd.github.io/tags/lldb/</loc>
+    <lastmod>2021-06-25T19:29:32+02:00</lastmod>
+  </url><url>
+    <loc>https://lateralusd.github.io/new_scripts/</loc>
+    <lastmod>2021-06-25T19:29:32+02:00</lastmod>
+  </url><url>
+    <loc>https://lateralusd.github.io/post/</loc>
+    <lastmod>2021-06-25T19:29:32+02:00</lastmod>
+  </url><url>
+    <loc>https://lateralusd.github.io/tags/</loc>
+    <lastmod>2021-06-25T19:29:32+02:00</lastmod>
+  </url><url>
     <loc>https://lateralusd.github.io/lldb_frida/</loc>
     <lastmod>2021-06-20T02:47:05+02:00</lastmod>
   </url><url>
@@ -11,19 +26,7 @@
     <loc>https://lateralusd.github.io/tags/frida/</loc>
     <lastmod>2021-06-20T02:47:05+02:00</lastmod>
   </url><url>
-    <loc>https://lateralusd.github.io/</loc>
-    <lastmod>2021-06-20T02:47:05+02:00</lastmod>
-  </url><url>
-    <loc>https://lateralusd.github.io/tags/lldb/</loc>
-    <lastmod>2021-06-20T02:47:05+02:00</lastmod>
-  </url><url>
-    <loc>https://lateralusd.github.io/post/</loc>
-    <lastmod>2021-06-20T02:47:05+02:00</lastmod>
-  </url><url>
     <loc>https://lateralusd.github.io/tags/reverse-engineering/</loc>
-    <lastmod>2021-06-20T02:47:05+02:00</lastmod>
-  </url><url>
-    <loc>https://lateralusd.github.io/tags/</loc>
     <lastmod>2021-06-20T02:47:05+02:00</lastmod>
   </url><url>
     <loc>https://lateralusd.github.io/tags/code-injection/</loc>

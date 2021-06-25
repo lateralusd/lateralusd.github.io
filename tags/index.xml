@@ -5,7 +5,16 @@
     <link>https://lateralusd.github.io/tags/</link>
     <description>Recent content in Tags on lateralusd&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 20 Jun 2021 02:47:05 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Jun 2021 19:29:32 +0200</lastBuildDate><atom:link href="https://lateralusd.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>lldb</title>
+      <link>https://lateralusd.github.io/tags/lldb/</link>
+      <pubDate>Fri, 25 Jun 2021 19:29:32 +0200</pubDate>
+      
+      <guid>https://lateralusd.github.io/tags/lldb/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>debugging</title>
       <link>https://lateralusd.github.io/tags/debugging/</link>
@@ -21,15 +30,6 @@
       <pubDate>Sun, 20 Jun 2021 02:47:05 +0200</pubDate>
       
       <guid>https://lateralusd.github.io/tags/frida/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>lldb</title>
-      <link>https://lateralusd.github.io/tags/lldb/</link>
-      <pubDate>Sun, 20 Jun 2021 02:47:05 +0200</pubDate>
-      
-      <guid>https://lateralusd.github.io/tags/lldb/</guid>
       <description></description>
     </item>
     

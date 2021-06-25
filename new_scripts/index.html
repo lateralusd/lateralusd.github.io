@@ -3,23 +3,21 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>lateralusd&#39;s blog &middot; </title>
-        <meta name="description" content="Lets play with iOS and Mac OS">
+        <title>New LLDB Scripts &middot; </title>
+        <meta name="description" content="Useful scripts when you need objection">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
         <meta name="generator" content="Hugo 0.83.1" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta property="og:title" content="lateralusd&#39;s blog">
-<meta property="og:description" content="Lets play with iOS and Mac OS">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://lateralusd.github.io/">
+        <meta property="og:title" content="New LLDB Scripts">
+<meta property="og:description" content="Useful scripts when you need objection">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://lateralusd.github.io/new_scripts/">
         <link rel="stylesheet" href="https://lateralusd.github.io/dist/site.css">
         <link rel="stylesheet" href="https://lateralusd.github.io/dist/syntax.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-        
-            <link href="/index.xml" rel="alternate" type="application/rss+xml">
         
         
         
@@ -76,56 +74,102 @@
             <div id="container">
 
 
-<div id="post-index" class="container" itemscope="" itemtype="https://schema.org/Blog">
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">New LLDB Scripts</h1>
     
-    <header class="post-header">
-        <h1 class="post-title" itemprop="name">lateralus daemons because I love daemons</h1>
-        <p>Lets play with iOS and Mac OS</p>
-    </header>
+        <p class="post-description" itemprop="description">Useful scripts when you need objection</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2021-06-25" itemprop="datePublished">Fri, Jun 25, 2021</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">XdaemonX</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
 
+        <div class="post-content clearfix" itemprop="articleBody">
+    
 
+    <h1 id="introduction">Introduction</h1>
+<p>On the last two pentests I had to work with application with short pentest duration. I did not have time to bypass RASP and things like that.</p>
+<p>As I needed to traverse directories and inspect files, I have created four lldb scripts to do just that.</p>
+<p>The scripts are:</p>
+<ul>
+<li>appEnv</li>
+<li>cat</li>
+<li>ls</li>
+<li>download</li>
+</ul>
+<h1 id="appenv">appEnv</h1>
+<p>Print the path the applications bundle directory as well as library directory.</p>
+<p><img src="/img/appEnv.png" alt="appEnv"></p>
+<h1 id="cat">cat</h1>
+<p>Print the output of file, mostly used for text files.</p>
+<p><img src="/img/cat.png" alt="cat"></p>
+<h1 id="ls">ls</h1>
+<p>List the content of directory.</p>
+<p>You can pass special variables, instead of typing full path, they are:</p>
+<ul>
+<li>lsAppDir/PATH/TO/THE/DIR - for directory in apps bundle directory</li>
+<li>lsLibDir/PATH/TO/THE/Dir - for directory in apps library directory</li>
+</ul>
+<p><em>IMG HERE</em></p>
+<h1 id="download">download</h1>
+<p>Download file the application.</p>
+<p>You need to pass host and port to the server where file will be uploaded as well as path to the file you want to download.</p>
+<p>Right now, application is sending base64 representation of file so when you write your server make sure to have that included.</p>
+<p>Base64 encoded file will be stored in form data inside <code>ff</code> parameter in request body.</p>
+<p><em>IMG_HERE</em></p>
 
-    <ol class="post-list">
-        
-        
-            <li class="post-stub" itemprop="blogPost" itemscope="" itemtype="https://schema.org/BlogPosting">
-    <a href="https://lateralusd.github.io/rce/" itemprop="url" title="Go to post detail">
-        <h4 class="post-stub-title" itemprop="name">Fun RCE with PHP upload</h4>
-        <time class="post-stub-date" datetime="2020-08-17">Published Mon, Aug 17, 2020</time>
-        
-    </a>
-</li>
-        
-            <li class="post-stub" itemprop="blogPost" itemscope="" itemtype="https://schema.org/BlogPosting">
-    <a href="https://lateralusd.github.io/theos_cycript_cyrun/" itemprop="url" title="Go to post detail">
-        <h4 class="post-stub-title" itemprop="name">Connecting the dots between Theos and Cycript/Cyrun</h4>
-        <time class="post-stub-date" datetime="2020-07-03">Published Fri, Jul 3, 2020</time>
-        
-    </a>
-</li>
-        
-            <li class="post-stub" itemprop="blogPost" itemscope="" itemtype="https://schema.org/BlogPosting">
-    <a href="https://lateralusd.github.io/debugging/" itemprop="url" title="Go to post detail">
-        <h4 class="post-stub-title" itemprop="name">Debugging iOS apps on jailbroken iPhone</h4>
-        <time class="post-stub-date" datetime="2020-07-03">Published Fri, Jul 3, 2020</time>
-        
-    </a>
-</li>
-        
-    </ol>
+</div>
 
-    <div class="post-navigation">
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/lldb/">lldb</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=New%20LLDB%20Scripts&url=https%3a%2f%2flateralusd.github.io%2fnew_scripts%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
         
 
-    <nav class="pagination" role="navigation">
-        <span class="page-number">Page 2 of 2</span>
         
-            <a class="newer-posts" href="/">&larr; Newer Posts</a>
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2flateralusd.github.io%2fnew_scripts%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
         
-        
-    </nav>
 
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2flateralusd.github.io%2fnew_scripts%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
     </div>
+</footer>
+
+        
+    </article>
 </div>
 
             </div>
